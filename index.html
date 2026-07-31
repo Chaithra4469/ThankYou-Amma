@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ಅಮ್ಮ ❤️ - ಅಮೂಲ್ಯವಾದ ಅನುಭವ</title>
+    
+    <!-- Premium Google Fonts: Outfit for numbers/structure, Anek Kannada for beautiful Kannada text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pearl: '#FDFBF7',
+                        softgold: '#D4AF37',
+                        rosegold: '#B76E79',
+                        champagne: '#F7E7CE',
+                        warmcream: '#FFFDD0',
+                        elegantblack: '#1A1A1A',
+                        'premium-pink': '#FFD1DC'
+                    },
+                    fontFamily: {
+                        sans: ['"Outfit"', '"Anek Kannada"', 'sans-serif'],
+                        kannada: ['"Anek Kannada"', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(212, 175, 55, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(183, 110, 121, 0.1);
+            --luxury-gradient: linear-gradient(135deg, #FDFBF7 0%, #FFFDD0 50%, #F7E7CE 100%);
+            --text-gradient: linear-gradient(to right, #D4AF37, #B76E79);
+        }
+
+        body {
+            background: var(--luxury-gradient);
+            color: #1A1A1A;
+            overflow-x: hidden;
+            font-family: 'Anek Kannada', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: none;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.4); border-radius: 10px; }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 40px -10px rgba(183, 110, 121, 0.15);
+            border-radius: 28px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .text-gradient {
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .font-kannada-bold { font-family: 'Anek Kannada', sans-serif; font-weight: 700; letter-spacing: 0.5px; }
+        .font-kannada-extrabold { font-family: 'Anek Kannada', sans-serif; font-weight: 800; letter-spacing: 0.5px; }
+
+        #splash-screen {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--luxury-gradient);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .tab-content {
+            display: none; 
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            padding-bottom: 120px;
+        }
+        
+        .tab-content.active-tab { display: block; }
+        .tab-content.show-tab { opacity: 1; transform: translateY(0); }
+
+        /* Premium Wide Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96%;
+            max-width: 600px;
+            z-index: 9900;
+            border-radius: 100px;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 6px; border-radius: 20px; transition: all 0.3s ease;
+            color: rgba(26, 26, 26, 0.4); cursor: pointer; flex: 1;
+        }
+        .nav-item.active {
+            color: #D4AF37; background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+        .nav-item svg {
+            width: 22px; height: 22px; margin-bottom: 2px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .nav-item.active svg { transform: scale(1.15); }
+        .nav-item span { font-size: 0.7rem; font-weight: 700; font-family: 'Anek Kannada', sans-serif; }
+
+        .masonry-grid { column-count: 2; column-gap: 16px; }
+        @media (min-width: 768px) { .masonry-grid { column-count: 3; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 16px; }
+
+        #canvas-bg, #canvas-fx {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none;
+        }
+        #canvas-bg { z-index: -1; }
+        #canvas-fx { z-index: 9000; }
+    </style>
+</head>
+<body class="antialiased selection:bg-rosegold selection:text-white relative">
+
+    <canvas id="canvas-bg"></canvas>
+    <canvas id="canvas-fx"></canvas>
+
+    <!-- Upgraded to be wide, more padded, and premium -->
+    <div id="splash-screen">
+        <div class="glass p-10 md:p-14 rounded-[2.5rem] flex flex-col items-center justify-center text-center w-[92%] max-w-lg mx-4 transform scale-95 opacity-0 transition-all duration-1000 shadow-[0_20px_60px_-15px_rgba(212,175,55,0.3)] border border-white/80" id="splash-content">
+            <div class="relative w-28 h-28 mb-8 animate-float">
+                <svg class="w-full h-full text-rosegold drop-shadow-2xl" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <h1 class="text-5xl font-kannada-extrabold text-gradient mb-3">ಅಮ್ಮ ❤️</h1>
+            <p class="text-lg text-gray-600 mb-10 font-bold font-kannada-bold tracking-wide">ಒಂದು ಅಮೂಲ್ಯವಾದ ಅನುಭವ</p>
+            
+            <button id="enter-btn" class="glass px-10 py-4 rounded-full text-xl font-bold font-kannada-bold text-elegantblack hover:bg-white/95 transition-all shadow-xl hover:shadow-2xl flex items-center gap-3 w-full justify-center">
+                ತೆರೆಯಿರಿ
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <main id="app-container" class="relative z-10 min-h-screen hidden pt-10 pb-20 px-4 md:px-8 max-w-5xl mx-auto">
+        
+        <section id="tab-home" class="tab-content active-tab show-tab">
+            <div class="text-center mb-12 pt-8">
+                <h1 class="text-5xl md:text-6xl font-kannada-bold text-gradient mb-4">
+                    ನನ್ನ ಪ್ರೀತಿಯ ಅಮ್ಮನಿಗೆ ❤️
+                </h1>
+                <p class="text-lg text-gray-700 font-bold font-kannada-bold tracking-wide">
+                    ನನ್ನ ಹೃದಯದ ರಾಣಿ. ನನ್ನ ಜೀವನದ ಬೆಳಕು.
+                </p>
+            </div>
+
+            <div class="w-full max-w-xl mx-auto mb-16 glass p-3 rounded-[36px]">
+                <img src="images/1.png" onerror="this.src='https://placehold.co/800x600/FDFBF7/D4AF37?text=ಅಮ್ಮ'" alt="ಅಮ್ಮ" class="w-full h-auto rounded-[28px] animate-float shadow-lg">
+            </div>
+
+            <div class="max-w-2xl mx-auto glass-card p-8 md:p-12 mb-16 relative overflow-hidden group">
+                <h2 class="text-3xl font-kannada-bold text-rosegold mb-6 flex items-center gap-2">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    ಅಮ್ಮ...
+                </h2>
+                
+                <div class="space-y-4 text-lg text-gray-800 font-bold font-kannada-bold leading-relaxed">
+                    <p>₹5000 ಲಾಸ್ ಆದ್ರೂ ಕೂಡ</p>
+                    <p>ನನ್ನಿಂದ ಆದ್ರೂ ಕೂಡ</p>
+                    <p>ನೀನು ಅದನ್ನೆಲ್ಲ ಮನಸ್ಸಲ್ಲಿ ಇಟ್ಟುಕೊಳ್ಳದೆ</p>
+                    <p>ನನ್ನ ಮೇಲೆ ನಂಬಿಕೆ ಇಟ್ಟು ನಿಂತೆಯಲ್ಲ...</p>
+                    
+                    <p class="mt-6 text-2xl text-gradient">ತುಂಬಾ ಧನ್ಯವಾದಗಳು ಅಮ್ಮ... 🥹❤️</p>
+                    
+                    <div class="pl-5 border-l-4 border-softgold my-6 space-y-2 py-2">
+                        <p>ನಿನ್ನ ನಂಬಿಕೆ</p>
+                        <p>ನಿನ್ನ ಪ್ರೀತಿ</p>
+                        <p>ನಿನ್ನ ಆಶೀರ್ವಾದ</p>
+                        
+                    </div>
+
+                    <!-- REPLACED MARKED SECTION WITH BEAUTIFUL 2-LINE BLOCK -->
+                    <div class="mt-10 mb-4 text-center bg-white/60 p-6 rounded-[1.5rem] shadow-[0_10px_30px_-10px_rgba(212,175,55,0.2)] border border-white/80">
+                        <p class="text-2xl md:text-3xl text-gradient font-kannada-extrabold leading-[1.6]">
+                            ನಿನ್ನ ಆಶೀರ್ವಾದ ಸದಾ<br>ನನ್ನ ಮೇಲೆ ಇರಲಿ ಅಮ್ಮ... ❤️
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- CHANGED FROM ಮಗ TO ಮಗಳು -->
+                <div class="mt-10 text-right">
+                    <p class="text-gray-500 font-kannada-bold mb-1">ಇಂತಿ ನಿನ್ನ ಪ್ರೀತಿಯ,</p>
+                    <p class="text-3xl font-kannada-bold text-gradient">ಮಗಳು ❤️</p>
+                </div>
+            </div>
+            
+            <div class="text-center animate-pulse-slow mb-10">
+                <p class="text-sm font-bold font-kannada-bold text-gray-700 bg-white/70 inline-block px-5 py-3 rounded-full shadow-sm">
+                    ✨ ಅಚ್ಚರಿಗಾಗಿ ಸ್ಕ್ರೀನ್ ಮೇಲೆ ಟ್ಯಾಪ್ ಮಾಡಿ ✨
+                </p>
+            </div>
+
+            <!-- Footer inside Home Tab -->
+            <footer class="text-center mt-16 mb-8">
+                <p class="text-sm font-bold text-gray-500 mb-2 font-kannada-bold">❤️ ಅನಂತ ಪ್ರೀತಿಯಿಂದ ಮಾಡಲಾಗಿದೆ ❤️</p>
+                <p class="text-md text-gray-700 font-bold font-kannada-bold">ಜಗತ್ತಿನ ಅತ್ಯುತ್ತಮ ಅಮ್ಮನಿಗೆ</p>
+            </footer>
+        </section>
+
+        <section id="tab-gallery" class="tab-content">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-kannada-bold text-gradient mb-3">ಅಮೂಲ್ಯ ಕ್ಷಣಗಳು</h2>
+                <p class="text-gray-600 font-bold font-kannada-bold">ನೆನಪುಗಳನ್ನು ಮೆಲುಕು ಹಾಕಲು ಸ್ವೈಪ್ ಮಾಡಿ</p>
+            </div>
+
+            <div class="relative overflow-hidden rounded-[32px] aspect-[4/5] w-full max-w-md mx-auto glass shadow-xl mb-12" id="main-carousel">
+                <div class="flex transition-transform duration-500 h-full" id="carousel-track">
+                    <!-- Slides injected via JS -->
+                </div>
+                
+                <button class="absolute top-1/2 left-3 -translate-y-1/2 w-10 h-10 rounded-full glass flex items-center justify-center text-elegantblack z-10" onclick="moveCarousel(-1)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button class="absolute top-1/2 right-3 -translate-y-1/2 w-10 h-10 rounded-full glass flex items-center justify-center text-elegantblack z-10" onclick="moveCarousel(1)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="carousel-indicators"></div>
+            </div>
+        </section>
+
+        <section id="tab-love" class="tab-content">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-kannada-bold text-gradient mb-3">ಹೃದಯ ಸ್ಪರ್ಶಿ ಮಾತುಗಳು</h2>
+                <p class="text-gray-600 font-bold font-kannada-bold">ಪ್ರತಿ ಪದವೂ ನಿನಗೆ ಅರ್ಪಿತ</p>
+            </div>
+
+            <div class="glass-card p-6 mb-10 min-h-[120px] flex items-center justify-center text-center">
+                <p id="typing-text" class="text-2xl font-kannada-bold text-rosegold min-h-[60px]"></p>
+            </div>
+
+            <div class="masonry-grid" id="quotes-container">
+                <!-- Quotes generated by JS -->
+            </div>
+        </section>
+
+        <section id="tab-memories" class="tab-content">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-kannada-bold text-gradient mb-6">ಪ್ರೀತಿಯ ಪಯಣ</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-12">
+                <div class="glass-card p-5 text-center">
+                    <div class="text-2xl font-bold text-softgold mb-1 counter" data-target="1000000">+0</div>
+                    <div class="text-sm font-bold font-kannada-bold text-gray-700">ಧನ್ಯವಾದಗಳು</div>
+                </div>
+                <div class="glass-card p-5 text-center">
+                    <div class="text-2xl font-bold text-rosegold mb-1 counter" data-target="9999">+0</div>
+                    <div class="text-sm font-bold font-kannada-bold text-gray-700">ಆಶೀರ್ವಾದಗಳು</div>
+                </div>
+                <div class="glass-card p-5 text-center">
+                    <div class="text-2xl font-bold text-champagne mb-1 counter" data-target="50000">+0</div>
+                    <div class="text-sm font-bold font-kannada-bold text-gray-700">ಮಂದಹಾಸ</div>
+                </div>
+                <div class="glass-card p-5 text-center">
+                    <div class="text-2xl font-bold text-gradient mb-1 counter" data-target="100">0%</div>
+                    <div class="text-sm font-bold font-kannada-bold text-gray-700">ನಂಬಿಕೆ</div>
+                </div>
+            </div>
+
+            <div class="relative max-w-md mx-auto py-6 pl-6">
+                <div class="absolute left-2 top-0 h-full w-1 bg-gradient-to-b from-softgold to-transparent rounded-full"></div>
+                
+                <div class="space-y-8">
+                    <div class="relative pl-6">
+                        <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-white border-4 border-softgold"></div>
+                        <h3 class="text-xl font-kannada-bold text-rosegold mb-1">ಬಾಲ್ಯ ❤️</h3>
+                        <p class="text-gray-700 font-bold font-kannada-bold text-sm">ನನ್ನ ಪ್ರತಿ ಹೆಜ್ಜೆಯಲ್ಲೂ ಕೈ ಹಿಡಿದು ನಡೆಸಿದೆ.</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-white border-4 border-rosegold"></div>
+                        <h3 class="text-xl font-kannada-bold text-rosegold mb-1">ಶಾಲೆ ❤️</h3>
+                        <p class="text-gray-700 font-bold font-kannada-bold text-sm">ಬೆಳಗ್ಗೆ ಬೇಗ ಎದ್ದು, ಪ್ರೀತಿಯಿಂದ ಊಟದ ಡಬ್ಬಿ ಕಟ್ಟಿಕೊಟ್ಟೆ.</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-white border-4 border-softgold"></div>
+                        <h3 class="text-xl font-kannada-bold text-softgold mb-1">ಬೆಂಬಲ ❤️</h3>
+                        <p class="text-gray-700 font-bold font-kannada-bold text-sm">ಕಷ್ಟದ ಸಮಯದಲ್ಲೂ ನನ್ನ ಬೆನ್ನಿಗೆ ನಿಂತೆ.</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-white border-4 border-rosegold"></div>
+                        <h3 class="text-xl font-kannada-bold text-rosegold mb-1">ನಂಬಿಕೆ ❤️</h3>
+                        <p class="text-gray-700 font-bold font-kannada-bold text-sm">₹5000 ಕಳೆದುಕೊಂಡಾಗಲೂ ನನ್ನನ್ನು ನಂಬಿದೆ.</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-white border-4 border-champagne animate-pulse-slow"></div>
+                        <h3 class="text-xl font-kannada-bold text-gradient mb-1">ಭವಿಷ್ಯ ❤️</h3>
+                        <!-- CHANGED FROM ಮಗನಾಗುತ್ತೇನೆ TO ಮಗಳಾಗುತ್ತೇನೆ -->
+                        <p class="text-gray-700 font-bold font-kannada-bold text-sm">ನಿನ್ನ ಹೆಮ್ಮೆಯ ಮಗಳಾಗುತ್ತೇನೆ ಎಂದು ಮಾತು ಕೊಡುತ್ತೇನೆ.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-surprise" class="tab-content flex flex-col items-center justify-center pt-20">
+            <div class="text-center w-full max-w-sm mx-auto glass-card p-10">
+                <h2 class="text-3xl font-kannada-bold text-gray-800 mb-4">ನಿನಗಾಗಿ ಒಂದು ಉಡುಗೊರೆ</h2>
+                <p class="text-gray-600 font-bold font-kannada-bold mb-8">ಅಚ್ಚರಿಗಾಗಿ ಕೆಳಗಿನ ಬಟನ್ ಒತ್ತಿ</p>
+                
+                <button id="surprise-btn" class="bg-gradient-to-r from-softgold to-rosegold text-white px-8 py-4 rounded-full text-xl font-bold font-kannada-bold w-full shadow-xl hover:scale-105 transition-transform">
+                    ತೆರೆಯಲು ಒತ್ತಿ
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navigation -->
+    <nav class="glass bottom-nav" id="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home')" data-tab="home">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <span>ಮುಖಪುಟ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('gallery')" data-tab="gallery">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <span>ಚಿತ್ರಗಳು</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('love')" data-tab="love">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>ಪ್ರೀತಿ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('memories')" data-tab="memories">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>ನೆನಪುಗಳು</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('surprise')" data-tab="surprise">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path></svg>
+            <span>ಅಚ್ಚರಿ</span>
+        </div>
+    </nav>
+
+    <div id="final-surprise" class="fixed inset-0 bg-black/95 z-[99999] hidden flex-col items-center justify-center opacity-0 transition-opacity duration-1000">
+        <h1 class="text-4xl md:text-6xl font-kannada-extrabold text-transparent bg-clip-text bg-gradient-to-r from-softgold via-white to-rosegold text-center px-4 leading-tight mb-8">
+            ❤️ ತುಂಬಾ ಧನ್ಯವಾದಗಳು <br/> ಅಮ್ಮ ❤️
+        </h1>
+        <button onclick="closeSurprise()" class="px-8 py-3 rounded-full border border-white/30 text-white hover:bg-white/20 transition-all font-kannada-bold text-xl">ಮುಚ್ಚಿ</button>
+    </div>
+
+    <script>
+        // STRICTLY ALL KANNADA QUOTES
+        const quotes = [
+            "ನಿನ್ನ ನಂಬಿಕೆಯೇ ನನ್ನ ಅತಿದೊಡ್ಡ ಶಕ್ತಿ.",
+            "ಯಾರೂ ನಂಬದಿದ್ದಾಗ ನೀನು ನನ್ನನ್ನು ನಂಬಿದೆ.",
+            "ನನ್ನ ಪ್ರತಿಯೊಂದು ಯಶಸ್ಸೂ ನಿನಗೆ ಸೇರಿದ್ದು ಅಮ್ಮ.",
+            "ನೀನೇ ನನ್ನ ಸುರಕ್ಷಿತ ತಾಣ.",
+            "ನಿನ್ನ ನಗುವೇ ನನ್ನ ಸಂತೋಷ.",
+            "ನನ್ನ ಮೊದಲ ಸ್ನೇಹಿತೆ. ನನ್ನ ಮೊದಲ ಗುರು. ನನ್ನ ಶಾಶ್ವತ ಹೀರೋ.",
+            "ಖಂಡಿತ ನಿನ್ನ ಹೆಮ್ಮೆಯ ಮಗಳಾಗುತ್ತೇನೆ ಎಂದು ಮಾತು ಕೊಡುತ್ತೇನೆ.", // Changed to Magalu
+            "ಎಷ್ಟೇ ಹಣ ಕೊಟ್ಟರೂ ನಿನ್ನ ಪ್ರೀತಿಗೆ ಸಾಟಿಯಾಗದು.",
+            "ನೀನು ನನ್ನ ಅತಿದೊಡ್ಡ ಆಶೀರ್ವಾದ.",
+            "ನನ್ನ ಪ್ರಪಂಚ ಶುರುವಾಗುವುದೇ ನಿನ್ನಿಂದ.",
+            "ಅಮ್ಮನ ಮಡಿಲಿಗಿಂತ ಸುರಕ್ಷಿತವಾದ ಜಾಗ ಬೇರೊಂದಿಲ್ಲ.",
+            "ಜಗತ್ತಿಗೆ ನೀನು ಕೇವಲ ಒಬ್ಬ ತಾಯಿ, ಆದರೆ ನನಗೆ ನೀನೇ ಜಗತ್ತು.",
+            "ಅಸಾಧ್ಯವಾದದ್ದನ್ನು ಸಾಧಿಸಲು ನಿನ್ನ ಪ್ರೀತಿಯೇ ನನಗೆ ಸ್ಫೂರ್ತಿ.",
+            "ನಾನು ಏನಾಗಿದ್ದೇನೋ, ಅದಕ್ಕೆಲ್ಲಾ ನೀನೇ ಕಾರಣ.",
+            "ನಾನು ಕಂಡ ಅತ್ಯಂತ ಶುದ್ಧವಾದ ಪ್ರೀತಿ ಎಂದರೆ ಅದು ನಿನ್ನದು.",
+            "ನಮ್ಮ ಕುಟುಂಬದ ಹೃದಯವೇ ನೀನು.",
+            "ನಾನು ಇಷ್ಟು ಬಲಶಾಲಿಯಾಗಲು ಕಾರಣ, ನನ್ನನ್ನು ಬೆಳೆಸಿದ ಗಟ್ಟಿಗಿತ್ತಿ ತಾಯಿ.",
+            "ನನ್ನ ಮೇಲಿನ ನಿನ್ನ ತಾಳ್ಮೆ ನಿಜಕ್ಕೂ ಅದ್ಭುತ.",
+            "ನಾನು ಸೋತಾಗಲೂ, ನಿನ್ನ ಪ್ರೀತಿ ಎಂದಿಗೂ ಸೋತಿಲ್ಲ.",
+            "ನನ್ನ ಮೇಲೆ ಯಾವತ್ತೂ ಭರವಸೆ ಕಳೆದುಕೊಳ್ಳದಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು.",
+            "ಕತ್ತಲೆಯಲ್ಲಿ ನನಗೆ ದಾರಿದೀಪ ನೀನೇ.",
+            "ನೀನು ಎಲ್ಲಿದ್ದೀಯೋ, ಅದೇ ನನಗೆ ಸ್ವರ್ಗ ಅಮ್ಮ.",
+            "ನಿನ್ನ ಆಶೀರ್ವಾದ ಪ್ರತಿದಿನ ನನ್ನನ್ನು ರಕ್ಷಿಸುತ್ತದೆ.",
+            "ನಾನು ಎಲ್ಲಿಗೆ ಹೋದರೂ ನಿನ್ನ ಪ್ರೀತಿಯನ್ನು ಎದೆಯಲ್ಲಿ ಹೊತ್ತುಕೊಂಡು ಹೋಗುತ್ತೇನೆ.",
+            "ನಿನ್ನ ತ್ಯಾಗವೇ ನನ್ನ ಜೀವನದ ಬುನಾದಿ."
+        ];
+
+        const floatingWords = [
+            "❤️ ನಂಬಿಕೆ", "❤️ ಅಮ್ಮ", "❤️ ಪ್ರೀತಿ", "❤️ ಆಶೀರ್ವಾದ", "❤️ ಅಮೂಲ್ಯ",
+            "❤️ ಶಾಶ್ವತ", "❤️ ಶಕ್ತಿ", "❤️ ವಜ್ರ", "❤️ ಮಂದಹಾಸ", "❤️ ಹೆಮ್ಮೆ",
+            "❤️ ಕುಟುಂಬ", "❤️ ಭರವಸೆ", "❤️ ಯಶಸ್ಸು", "❤️ ಕನಸು", "❤️ ನನ್ನಮ್ಮ",
+            "❤️ ನನ್ನ ರಾಣಿ", "❤️ ನನ್ನ ಹೀರೋ", "❤️ ಸಂತೋಷ", "❤️ ಬಲ", "❤️ ಧನ್ಯವಾದಗಳು",
+            "✨ ನಂಬಿಕೆ", "✨ ಖುಷಿ", "✨ ಕಾಳಜಿ", "✨ ದೇವತೆ", "✨ ಸುಂದರ",
+            "🌟 ದಾರಿದೀಪ", "🌟 ಸುರಕ್ಷಿತ", "🌟 ನೆಮ್ಮದಿ", "🌟 ಮನೆ", "🌟 ಸಂಪತ್ತು",
+            "💖 ಬೆಂಬಲ", "💖 ಮಮತೆ", "💖 ಸ್ಫೂರ್ತಿ", "💖 ಉಡುಗೊರೆ", "💖 ಜೀವನ",
+            "🪙 ₹5000", "🪙 ₹5000", "🪙 ₹5000", "🪙 ₹5000", "🪙 ₹5000"
+        ];
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('show-tab');
+                el.classList.remove('active-tab');
+                el.style.display = 'none';
+            });
+
+            const newTab = document.getElementById(`tab-${tabId}`);
+            newTab.style.display = 'block';
+            
+            void newTab.offsetWidth;
+            
+            newTab.classList.add('active-tab');
+            newTab.classList.add('show-tab');
+
+            if (tabId === 'memories') animateCounters();
+            if (tabId === 'love') startTyping();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const quotesContainer = document.getElementById('quotes-container');
+        quotes.forEach((quote, index) => {
+            const bgClass = ['bg-white/80', 'bg-champagne/60', 'bg-rosegold/10', 'bg-softgold/10'][index % 4];
+            const quoteHTML = `
+                <div class="masonry-item glass-card ${bgClass} p-5">
+                    <svg class="w-5 h-5 text-rosegold/50 mb-2" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    <p class="text-gray-900 font-bold font-kannada-bold leading-relaxed">${quote}</p>
+                </div>
+            `;
+            quotesContainer.innerHTML += quoteHTML;
+        });
+
+        let typeIndex = 0, charIndex = 0, isDeleting = false;
+        const typingEl = document.getElementById('typing-text');
+        const wishes = [
+            "ನಿನ್ನ ಮುಖದ ಮೇಲಿನ ನಗು ಮಾಸದಿರಲಿ...",
+            "ಈ ಜಗತ್ತಿನ ಎಲ್ಲಾ ಸಂತೋಷವೂ ನಿನಗೆ ಸಿಗಲಿ...",
+            "ಈ ಇಡೀ ಪ್ರಪಂಚವೇ ನಿನಗೆ ಒಲಿಯಲಿ...",
+            "ನಿನ್ನ ದಿನಗಳು ಸುಂದರವಾಗಿರಲಿ..."
+        ];
+
+        function startTyping() {
+            if(!document.getElementById('tab-love').classList.contains('active-tab')) return;
+            const currentWish = wishes[typeIndex];
+            
+            if (isDeleting) {
+                typingEl.textContent = currentWish.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingEl.textContent = currentWish.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            let typeSpeed = isDeleting ? 30 : 80;
+            if (!isDeleting && charIndex === currentWish.length) {
+                typeSpeed = 2000; isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false; typeIndex = (typeIndex + 1) % wishes.length; typeSpeed = 500;
+            }
+            setTimeout(startTyping, typeSpeed);
+        }
+
+        const images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '7.png'];
+        const track = document.getElementById('carousel-track');
+        const indicators = document.getElementById('carousel-indicators');
+        let currentSlide = 0;
+
+        images.forEach((src, i) => {
+            const slide = document.createElement('div');
+            slide.className = 'w-full h-full flex-shrink-0 p-2';
+            const img = document.createElement('img');
+            img.src = src;
+            img.onerror = () => { img.src = `https://placehold.co/600x800/FDFBF7/D4AF37?text=ಅಮ್ಮ`; };
+            img.className = 'w-full h-full object-cover rounded-3xl';
+            slide.appendChild(img);
+            track.appendChild(slide);
+
+            const dot = document.createElement('div');
+            dot.className = `w-2 h-2 rounded-full transition-all ${i === 0 ? 'bg-rosegold w-4' : 'bg-gray-300'}`;
+            indicators.appendChild(dot);
+        });
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            Array.from(indicators.children).forEach((dot, i) => {
+                dot.className = `w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'bg-rosegold w-4' : 'bg-gray-300'}`;
+            });
+        }
+        function moveCarousel(dir) {
+            currentSlide = (currentSlide + dir + images.length) % images.length;
+            updateCarousel();
+        }
+
+        function animateCounters() {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const isPercent = counter.innerText.includes('%');
+                let current = 0;
+                const update = () => {
+                    const inc = target / 50;
+                    if(current < target) {
+                        current += inc;
+                        counter.innerText = isPercent ? `${Math.ceil(current)}%` : `+${Math.ceil(current).toLocaleString('kn-IN')}`;
+                        requestAnimationFrame(update);
+                    } else {
+                        counter.innerText = isPercent ? `${target}%` : `+${target.toLocaleString('kn-IN')}`;
+                    }
+                };
+                update();
+            });
+        }
+
+        const canvasBg = document.getElementById('canvas-bg');
+        const ctxBg = canvasBg.getContext('2d');
+        const canvasFx = document.getElementById('canvas-fx');
+        const ctxFx = canvasFx.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = canvasBg.width = canvasFx.width = window.innerWidth;
+            height = canvasBg.height = canvasFx.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        let fxParticles = [];
+        function spawnMoneyRain(x, y) {
+            for(let i=0; i<8; i++) {
+                fxParticles.push({
+                    text: floatingWords[Math.floor(Math.random() * floatingWords.length)],
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 6, vy: Math.random() * -6 - 2,
+                    gravity: 0.15, life: 1, decay: Math.random() * 0.01 + 0.005,
+                    scale: Math.random() * 0.4 + 0.8
+                });
+            }
+        }
+        function spawnFireworks(x, y) {
+            const colors = ['#D4AF37', '#B76E79', '#FFD1DC', '#FFFDD0'];
+            for(let i=0; i<30; i++) {
+                fxParticles.push({
+                    type: 'spark', color: colors[Math.floor(Math.random() * colors.length)],
+                    x: x, y: y, vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12,
+                    gravity: 0.05, life: 1, decay: 0.02, r: Math.random() * 3 + 1
+                });
+            }
+        }
+
+        function drawFx() {
+            ctxFx.clearRect(0, 0, width, height);
+            for(let i = fxParticles.length - 1; i >= 0; i--) {
+                let p = fxParticles[i];
+                p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.life -= p.decay;
+                if(p.life <= 0) { fxParticles.splice(i, 1); continue; }
+                
+                ctxFx.save();
+                ctxFx.translate(p.x, p.y);
+                ctxFx.globalAlpha = p.life;
+                
+                if(p.type === 'spark') {
+                    ctxFx.beginPath(); ctxFx.arc(0, 0, p.r, 0, Math.PI*2);
+                    ctxFx.fillStyle = p.color; ctxFx.fill();
+                } else {
+                    ctxFx.scale(p.scale, p.scale);
+                    ctxFx.font = 'bold 18px "Anek Kannada", sans-serif';
+                    ctxFx.fillStyle = p.text.includes('₹') ? '#85BB65' : '#B76E79';
+                    ctxFx.textAlign = 'center'; ctxFx.fillText(p.text, 0, 0);
+                }
+                ctxFx.restore();
+            }
+            requestAnimationFrame(drawFx);
+        }
+        drawFx();
+
+        document.addEventListener('click', (e) => {
+            if(!e.target.closest('button') && !e.target.closest('.nav-item')) spawnMoneyRain(e.clientX, e.clientY);
+        });
+
+        const finalSurprise = document.getElementById('final-surprise');
+        let fireworksInterval;
+        document.getElementById('surprise-btn').addEventListener('click', () => {
+            finalSurprise.classList.remove('hidden');
+            finalSurprise.classList.add('flex');
+            void finalSurprise.offsetWidth;
+            finalSurprise.style.opacity = '1';
+            fireworksInterval = setInterval(() => spawnFireworks(Math.random() * width, Math.random() * height/2), 300);
+        });
+        function closeSurprise() {
+            finalSurprise.style.opacity = '0';
+            setTimeout(() => { finalSurprise.classList.add('hidden'); finalSurprise.classList.remove('flex'); clearInterval(fireworksInterval); }, 1000);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splash-content').style.opacity = '1';
+                document.getElementById('splash-content').style.transform = 'scale(1)';
+            }, 100);
+            
+            document.getElementById('enter-btn').addEventListener('click', () => {
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                    document.getElementById('app-container').classList.remove('hidden');
+                }, 800);
+            });
+        });
+    </script>
+</body>
+</html>
